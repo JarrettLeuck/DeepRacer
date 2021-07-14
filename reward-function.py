@@ -36,7 +36,7 @@ def reward_function(params):
         else:
             reward = 1e-3  # likely crashed/ close to off track
 
-    reward += (progress * 50) + (speed) + (distance_reward * 5)
+    reward += (speed * .05) + (distance_reward * .25)
 
      # Steering penality threshold, change the number based on your action space setting
     ABS_STEERING_THRESHOLD = 15
