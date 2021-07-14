@@ -28,7 +28,7 @@ def reward_function(params):
         reward *= -1
     else:
         if distance_from_center <= marker_1:
-            distance_reward = 1
+            distance_reward = 0.7
         elif distance_from_center <= marker_2:
             distance_reward = 0.5
         elif distance_from_center <= marker_3:
@@ -36,7 +36,7 @@ def reward_function(params):
         else:
             reward = 1e-3  # likely crashed/ close to off track
 
-    reward += (speed * .01) + (distance_reward)
+    reward += (speed * .2) + (distance_reward)
 
      # Steering penality threshold, change the number based on your action space setting
     ABS_STEERING_THRESHOLD = 15
