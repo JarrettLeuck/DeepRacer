@@ -32,7 +32,7 @@ def reward_function(params):
     y_dif = next_waypoint[1] - prev_waypoint[1]
     x_dif = next_waypoint[0] - prev_waypoint[0]
 
-    track_direction = math.atan2(y_dif, x_dif) * math.PI/180
+    track_direction = math.atan2(y_dif, x_dif) * math.pi/180
 
     # reward based on track_direction and car heading
     # track_direction - heading => want to be close to 0
