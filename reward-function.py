@@ -1,3 +1,4 @@
+import math
 def reward_function(params):
     #Input parameters
     all_wheels_on_track = params['all_wheels_on_track'] # boolean, flag to indicate if the agent is on the track
@@ -19,24 +20,31 @@ def reward_function(params):
     track_width = params['track_width'] # float, width of the track
     waypoints = params['waypoints'] # [(float, float), ], Calculate 3 markers that are at varying distances away from the center line
 
-    marker_1 = 0.1 * track_width
-    marker_2 = 0.25 * track_width
-    marker_3 = 0.5 * track_width
     reward = 1e-3
-    distance_reward = 0.0
+    
     if is_offtrack:
-        reward *= -1
-    else:
-        if distance_from_center <= marker_1:
-            distance_reward = 0.7
-        elif distance_from_center <= marker_2:
-            distance_reward = 0.5
-        elif distance_from_center <= marker_3:
-            distance_reward = 0.1
-        else:
-            reward = 1e-3  # likely crashed/ close to off track
+        return reward
+    
+    # (x,y) of previous and next waypoints
+    prev_waypoint = params['waypoints'][params['closest_waypoints'][0]]
+    next_waypoint = params['waypoints'][params['closest_waypoints'][1]]
 
-    reward += (speed * .2) + (distance_reward)
+    y_dif = next_waypoint[1] - prev_waypoint[1]
+    x_dif = next_waypoint[0] - prev_waypoint[0]
+
+    track_direction = math.atan2(y_dif, x_dif) * math.PI/180
+
+    # reward based on track_direction and car heading
+    # track_direction - heading => want to be close to 0
+
+    direction_diff = math.abs(track_direction - heading)
+
+    if direction_diff > 180:
+        direction_diff = 360 - direction_diff
+
+    direction_reward = 1 - (direction_diff / 180.0)
+
+    reward += (speed * .25) + (direction_reward)
 
      # Steering penality threshold, change the number based on your action space setting
     ABS_STEERING_THRESHOLD = 15
