@@ -37,7 +37,7 @@ def reward_function(params):
     # reward based on track_direction and car heading
     # track_direction - heading => want to be close to 0
 
-    direction_diff = math.abs(track_direction - heading)
+    direction_diff = abs(track_direction - heading)
 
     if direction_diff > 180:
         direction_diff = 360 - direction_diff
